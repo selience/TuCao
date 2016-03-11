@@ -9,24 +9,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.sdx.mobile.tucao.R;
 import com.sdx.mobile.tucao.app.GlobalContext;
 import com.sdx.mobile.tucao.base.BaseToolBarActivity;
 import com.sdx.mobile.tucao.model.RequestParams;
 import com.sdx.mobile.tucao.model.Result;
-import com.sdx.mobile.tucao.util.DebugLog;
 import com.sdx.mobile.tucao.util.Toaster;
 import com.sdx.mobile.tucao.widget.ExtendMediaPicker;
 import com.sdx.mobile.tucao.widget.UIPickImageView;
-
 import org.json.JSONArray;
-
 import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import okhttp3.MediaType;
@@ -78,13 +73,12 @@ public class PublishActivity extends BaseToolBarActivity implements ExtendMediaP
     }
 
     private void uploadImage() {
-        final RequestParams params = new RequestParams();
-        params.addParam("type", "tucao");
-
         Observable observable = Observable.from(mPickImageView.getImageList())
                 .flatMap(new Func1<String, Observable<Result>>() {
                     @Override
                     public Observable<Result> call(String s) {
+                        RequestParams params = new RequestParams();
+                        params.addParam("type", "tucao");
                         RequestBody fileBody = RequestBody.create(
                                 MediaType.parse("multipart/form-data"), new File(s));
                         return mService.upload(fileBody, params.query());
