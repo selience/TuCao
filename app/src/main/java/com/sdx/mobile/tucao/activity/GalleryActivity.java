@@ -53,9 +53,6 @@ public class GalleryActivity extends BaseToolBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_text, menu);
-        MenuItem menuItem = menu.findItem(R.id.menu_item_text);
-        menuItem.setTitle("");
-        menuItem.setIcon(R.drawable.ic_action_done);
         return super.onCreateOptionsMenu(menu);
     }
 
