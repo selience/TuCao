@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">吐槽</string>
+
+    <string name="string_search_hint_text">寻觅吐槽对象</string>
+
+    <string name="string_homepage_list_item_upcount_text">%d赞</string>
+    <string name="string_homepage_list_item_comment_count_text">(%d)</string>
+    <string name="string_homepage_list_item_load_more_text">展开全部</string>
+    <string name="string_homepage_search_word_count_text">%d个吐槽</string>
+
+    <string name="string_homepage_popup_item_up_text">赞一个</string>
+    <string name="string_homepage_popup_item_down_text">踩一脚</string>
+
+    <string name="string_want_create_title">我要吐槽</string>
+    <string name="string_want_create_menu_post_text">发表</string>
+    <string name="string_want_create_post_hint_text">我也来吐槽几句...</string>
+    <string name="string_picker_image_null_text">请选择发布图片</string>
+    <string name="string_picker_image_msg_count_text">最多只能选择%d张图片</string>
+    <string name="string_publish_content_text">请输入吐槽内容</string>
+    <string name="string_publish_content_success">发布吐槽内容成功</string>
+
+    <string name="string_view_topic_detail_title">查看吐槽</string>
+    <string name="string_view_topic_detail_post_text">开喷</string>
+    <string name="string_view_topic_detail_new_publish">最新发布</string>
+    <string name="string_view_topic_detail_hot_topic">最热吐槽</string>
+    <string name="string_view_topic_detail_topic_count">%d个吐槽</string>
+    <string name="string_view_topic_detail_comment_hint_text">我也来吐槽几句...</string>
+    <string name="string_view_topic_detail_comment_not_empty">请输入评论内容</string>
+    <string name="string_view_topic_detail_comment_success">发表评论成功</string>
+
+    <string-array name="string_pick_image_text">
+        <item>使用相机拍照</item>
+        <item>从手机相册选择</item>
+    </string-array>
+</resources>

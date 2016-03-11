@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/id_detail_title_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/app_name"
+        android:textColor="@color/color_dark_gray"
+        android:textSize="16sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:padding="10dp">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/id_detail_order_new_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:drawableLeft="@drawable/ic_order_selector"
+                android:drawablePadding="5dp"
+                android:singleLine="true"
+                android:tag="new"
+                android:text="@string/string_view_topic_detail_new_publish"
+                android:textColor="@color/color_detail_order_text"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/id_detail_order_hot_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:button="@null"
+                android:drawableLeft="@drawable/ic_order_selector"
+                android:drawablePadding="5dp"
+                android:tag="hot"
+                android:text="@string/string_view_topic_detail_hot_topic"
+                android:textColor="@color/color_detail_order_text"
+                android:textSize="14sp" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/id_detail_count_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:singleLine="true"
+            android:text="@string/string_view_topic_detail_topic_count"
+            android:textColor="@color/color_dark_gray"
+            android:textSize="14sp" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/id_swipeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/id_listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@android:color/transparent"
+                android:clipToPadding="false"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                android:fadingEdgeLength="0dp"
+                android:listSelector="@android:color/transparent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:scrollbarStyle="outsideOverlay" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <FrameLayout
+            android:id="@+id/id_detail_post_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="30dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bg_post" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="3dp"
+                android:drawablePadding="3dp"
+                android:drawableTop="@drawable/ic_post"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/string_view_topic_detail_post_text"
+                android:textColor="@color/color_white"
+                android:textSize="12sp" />
+        </FrameLayout>
+
+    </FrameLayout>
+
+</merge>

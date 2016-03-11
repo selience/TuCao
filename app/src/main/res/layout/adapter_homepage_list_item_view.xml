@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_item_background"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="@color/color_background" />
+
+    <TextView
+        android:id="@+id/id_topic_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textSize="16sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/id_topic_avatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/color_placeholder_drawable" />
+
+        <TextView
+            android:id="@+id/id_topic_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/id_topic_avatar"
+            android:textColor="@color/color_dark_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/id_topic_upcount"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/id_topic_avatar"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="@string/string_homepage_list_item_upcount_text"
+            android:textColor="@color/color_dark_gray"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/id_topic_up_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/id_topic_upcount"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_topic_button" />
+
+        <com.sdx.mobile.tucao.widget.UITopicImageView
+            android:id="@+id/id_topic_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/id_topic_text"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/id_topic_avatar" />
+
+        <TextView
+            android:id="@+id/id_topic_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/id_topic_images"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/id_topic_avatar"
+            android:singleLine="true"
+            android:textColor="@color/color_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/id_topic_comment_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/id_topic_images"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:singleLine="true"
+            android:text="@string/string_homepage_list_item_comment_count_text"
+            android:textColor="@color/color_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/id_topic_comment_count_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/id_topic_comment_count"
+            android:layout_toLeftOf="@id/id_topic_comment_count"
+            android:drawableLeft="@drawable/ic_comment_count"
+            android:drawablePadding="5dp"
+            android:text="评论"
+            android:textColor="#0076ff"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_item_background"
+    android:paddingBottom="10dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
+    <TextView
+        android:id="@+id/id_comment_load_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:text="@string/string_homepage_list_item_load_more_text"
+        android:textColor="@color/color_dark_gray"
+        android:textSize="14sp" />
+</FrameLayout>

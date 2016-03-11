@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#F3F3F3"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <EditText
+        android:id="@+id/id_post_comment_editview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:background="@drawable/bg_search"
+        android:hint="@string/string_view_topic_detail_comment_hint_text"
+        android:padding="8dp"
+        android:textColor="@color/color_dark_gray"
+        android:textColorHint="@color/color_search_text"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/id_post_comment_button"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/bg_post_comment_shape"
+        android:gravity="center"
+        android:text="发表"
+        android:textColor="@color/color_dark_gray"
+        android:textSize="14sp" />
+</LinearLayout>
