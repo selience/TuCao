@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -78,12 +77,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ItemHold
         }
 
         // 设置选中状态
-        holder.checkBox.setOnCheckedChangeListener(null);
-        holder.checkBox.setChecked(mStatusList.get(position));
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.convertView.setSelected(mStatusList.get(position));
+        holder.convertView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+            public void onClick(View view) {
+                if (!view.isSelected()) {
                     mCheckList.add(uriString);
                     mStatusList.put(position, true);
                     holder.convertView.setSelected(true);

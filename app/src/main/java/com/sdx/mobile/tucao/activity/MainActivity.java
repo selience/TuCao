@@ -25,7 +25,6 @@ import com.sdx.mobile.tucao.model.TopicModel;
 import com.sdx.mobile.tucao.model.TopicWord;
 import com.sdx.mobile.tucao.model.UserModel;
 import com.sdx.mobile.tucao.util.DebugLog;
-import com.sdx.mobile.tucao.util.DeviceUtils;
 import com.sdx.mobile.tucao.util.Toaster;
 import com.sdx.mobile.tucao.widget.CommentPopupWindow;
 import com.sdx.mobile.tucao.widget.CommentPopupWindow.EventCommentData;
@@ -102,7 +101,9 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TopicWord topicWord = (TopicWord) parent.getItemAtPosition(position);
-                startTopicDetailAction(topicWord.getId());
+                if (topicWord != null) {
+                    startTopicDetailAction(topicWord.getId());
+                }
             }
         });
 
@@ -197,10 +198,9 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void updateTopicWords(List<TopicWord> topicWords) {
-        if (topicWords != null && topicWords.size() > 0) {
-            mTopicAdapter.setItems(topicWords);
-            mTopicAdapter.notifyDataSetChanged();
-        }
+        mTopicAdapter.setItems(topicWords);
+        mTopicAdapter.setWords(mSearchTextView.getText().toString());
+        mTopicAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -239,6 +239,7 @@ public class MainActivity extends BaseActivity implements
 
     public void onEvent(EventPopupData eventData) {
         if (eventData.context != this) return;
+        this.mTopicModel = eventData.topicModel;
         if (eventData.type.equals(EventPopupData.TYPE_UP)) {
             handleUpTopic(eventData.topicModel.getId());
         } else if (eventData.type.equals(EventPopupData.TYPE_DOWN)) {
@@ -256,7 +257,7 @@ public class MainActivity extends BaseActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Section section = (Section) parent.getItemAtPosition(position);
         if (section.getName().equals(Section.SECTION_TOPIC)) {
-            startTopicDetailAction(((TopicModel) section.getValue()).getId());
+            startTopicDetailAction(((TopicModel) section.getValue()).getSid());
         }
     }
 
@@ -298,6 +299,10 @@ public class MainActivity extends BaseActivity implements
                 Toaster.show(this, R.string.string_view_topic_detail_comment_success);
             } else if (taskName.equals(SEARCH_TOPIC_LIST_TASK)) {
                 updateTopicWords((List<TopicWord>) result.getValue());
+            } else if (taskName.equals(HANDLE_UP_TOPIC_TASK) || taskName.equals(HANDLE_DOWN_TOPIC_TASK)) {
+                mTopicModel.updateCount(Integer.parseInt(result.getData()));
+                mListAdapter.notifyDataSetChanged();
+                Toaster.show(this, result.getMsg());
             }
         } else {
             Toaster.show(this, result.getMsg());

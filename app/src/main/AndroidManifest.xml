@@ -20,6 +20,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".app.GlobalContext"
@@ -29,10 +30,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="56e7ab91e0f55ae380001840" />
+
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -48,7 +54,7 @@
         <activity
             android:name=".activity.GalleryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/string_want_create_title"
+            android:label="@string/string_pic_select_image_title"
             android:screenOrientation="portrait" />
 
         <activity

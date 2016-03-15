@@ -6,10 +6,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sdx.mobile.tucao.R;
 import com.sdx.mobile.tucao.util.DeviceUtils;
+import com.sdx.mobile.tucao.util.Toaster;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -45,7 +48,7 @@ public class UIPickImageView extends FrameLayout {
         this.mImageList = new HashSet<>();
         mSpaceWidth = (int) DeviceUtils.dp2px(context, 0);
 
-        updateView();
+        createListItemView();
     }
 
     public Set<String> getImageList() {
@@ -54,40 +57,45 @@ public class UIPickImageView extends FrameLayout {
 
     public void addItemView(String imagePath) {
         mImageList.add(imagePath);
-        updateView();
+        createListItemView();
     }
 
     public void addItemView(List<String> imageList) {
         mImageList.addAll(imageList);
-        updateView();
+        createListItemView();
     }
 
     public void removeItemView(String imagePath) {
         mImageList.remove(imagePath);
+        createListItemView();
     }
 
     public void setOnItemClickListener(OnClickListener l) {
         this.mOnItemClickListener = l;
     }
 
-    private void updateView() {
-        updateViewList(new ArrayList<String>(mImageList));
-    }
+    private void createListItemView() {
+        if (mImageList != null && mImageList.size() > MAX_COUNT) {
+            Toaster.show(getContext(), getResources().getString(
+                    R.string.string_picker_image_msg_count_text, MAX_COUNT));
+            return;
+        }
 
-    private void updateViewList(List<String> imageList) {
+        List<String> imageList = new ArrayList<>();
+        if (mImageList != null && mImageList.size() > 0) {
+            imageList.addAll(mImageList);
+        }
+
         removeAllViews();
-        LayoutParams params = null;
-
-        int size = (imageList != null && imageList.size() > 0) ? imageList.size() : 0;
-
-        for (int i = 0; i < size + 1; i++) {
+        LayoutParams params;
+        for (int i = 0; i < imageList.size() + 1; i++) {
             if (i >= MAX_COUNT) break;
 
             params = new LayoutParams(mColumnWidth, mColumnWidth);
             params.leftMargin = (mColumnWidth + mSpaceWidth) * (i % COLUMN_SIZE);
             params.topMargin = (mSpaceWidth + mColumnWidth) * (i / COLUMN_SIZE);
 
-            String imagePath = (i < size) ? imageList.get(i) : null;
+            String imagePath = (i < imageList.size()) ? imageList.get(i) : null;
             addView(createView(imagePath), params);
         }
     }

@@ -48,9 +48,8 @@ public class DetailActivity extends BaseToolBarActivity implements
         EndlessScrollListener.OnLoadMoreListener,
         CompoundButton.OnCheckedChangeListener,
         SwipeRefreshLayout.OnRefreshListener {
-    private static final String GET_DETAIL_DATA_TASK = "GET_INDEX_DATA";
+    private static final String GET_DETAIL_DATA_TASK = "GET_DETAIL_DATA_TASK";
     private static final String GET_COMMENT_DATA_TASK = "GET_COMMENT_DATA";
-    private static final String REGISTER_USER_TASK = "REGISTER_USER_TASK";
     private static final String HANDLE_UP_TOPIC_TASK = "HANDLE_UP_TOPIC_TASK";
     private static final String HANDLE_DOWN_TOPIC_TASK = "HANDLE_DOWN_TOPIC_TASK";
     private static final String PUBLISH_COMMENT_TASK = "PUBLISH_COMMENT_TASK";
@@ -221,6 +220,7 @@ public class DetailActivity extends BaseToolBarActivity implements
 
     public void onEvent(TopicPopupWindow.EventPopupData eventData) {
         if (eventData.context != this) return;
+        this.mTopicModel = eventData.topicModel;
         if (eventData.type.equals(TopicPopupWindow.EventPopupData.TYPE_UP)) {
             handleUpTopic(eventData.topicModel.getId());
         } else if (eventData.type.equals(TopicPopupWindow.EventPopupData.TYPE_DOWN)) {
@@ -258,9 +258,7 @@ public class DetailActivity extends BaseToolBarActivity implements
     @Override
     public void onSuccess(String taskName, Result result) {
         if (result.isOk()) {
-            if (taskName.equals(REGISTER_USER_TASK)) {
-                GlobalContext.getInstance().setmUserModel((UserModel) result.getValue());
-            } else if (taskName.equals(GET_DETAIL_DATA_TASK)) {
+            if (taskName.equals(GET_DETAIL_DATA_TASK)) {
                 mIsEnd = result.isEnd();
                 mRefreshLayout.setRefreshing(false);
                 updateList((TopicDetail) result.getValue());
@@ -278,6 +276,10 @@ public class DetailActivity extends BaseToolBarActivity implements
                 mListAdapter.notifyDataSetChanged();
 
                 Toaster.show(this, R.string.string_view_topic_detail_comment_success);
+            } else if (taskName.equals(HANDLE_UP_TOPIC_TASK) || taskName.equals(HANDLE_DOWN_TOPIC_TASK)) {
+                mTopicModel.updateCount(Integer.parseInt(result.getData()));
+                mListAdapter.notifyDataSetChanged();
+                Toaster.show(this, result.getMsg());
             }
         } else {
             Toaster.show(this, result.getMsg());

@@ -34,7 +34,6 @@
         android:id="@+id/id_post_pickview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
         android:background="@color/color_background"
         android:paddingRight="3dp" />
 

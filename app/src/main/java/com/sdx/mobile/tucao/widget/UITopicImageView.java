@@ -37,7 +37,7 @@ public class UITopicImageView extends FrameLayout {
 
     private void setupView(Context context) {
         this.context = context;
-        mSpaceWidth = (int) DeviceUtils.dp2px(context, 10);
+        mSpaceWidth = (int) DeviceUtils.dp2px(context, 5);
     }
 
     @Override

@@ -24,6 +24,7 @@
             android:dropDownVerticalOffset="2dp"
             android:hint="@string/string_search_hint_text"
             android:padding="8dp"
+            android:singleLine="true"
             android:textColor="@color/color_dark_gray"
             android:textColorHint="@color/color_search_text"
             android:textSize="14sp" />

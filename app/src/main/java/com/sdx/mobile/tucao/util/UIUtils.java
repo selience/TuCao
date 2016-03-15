@@ -5,8 +5,12 @@ import android.content.res.Resources;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
 import com.sdx.mobile.tucao.app.GlobalContext;
 import com.sdx.mobile.tucao.constant.Constants;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -109,5 +113,13 @@ public class UIUtils implements Constants {
     public static String getFileName(String imagePath) {
         int lastIndex = imagePath.lastIndexOf("/");
         return imagePath.substring(lastIndex + 1);
+    }
+
+    public static void hideSoftInputFromWindow(View view) {
+        Context context = view.getContext();
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm.isActive()) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

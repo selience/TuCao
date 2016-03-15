@@ -21,7 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:singleLine="true"
-        android:text="@string/string_homepage_search_word_count_text"
         android:textColor="@color/color_gray"
         android:textSize="14sp" />
 </LinearLayout>

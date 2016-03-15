@@ -11,6 +11,7 @@ import java.util.List;
 public class TopicModel {
 
     private int id;
+    private int sid;
     private String title;
     private int uid;
     private String user_face;
@@ -19,6 +20,7 @@ public class TopicModel {
     private String text;
     private List<String> imgs;
     private String add_time;
+    private String last_comment_time;
     private int comment_count;
     private List<CommentModel> comment_list;
     private int comment_max_id;
@@ -71,6 +73,10 @@ public class TopicModel {
         this.up_count = up_count;
     }
 
+    public void updateCount(int increase) {
+        this.up_count += increase;
+    }
+
     public String getText() {
         return text;
     }
@@ -117,5 +123,21 @@ public class TopicModel {
 
     public void setComment_max_id(int comment_max_id) {
         this.comment_max_id = comment_max_id;
+    }
+
+    public int getSid() {
+        return sid;
+    }
+
+    public void setSid(int sid) {
+        this.sid = sid;
+    }
+
+    public String getLast_comment_time() {
+        return last_comment_time;
+    }
+
+    public void setLast_comment_time(String last_comment_time) {
+        this.last_comment_time = last_comment_time;
     }
 }

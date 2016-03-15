@@ -13,7 +13,6 @@ import android.view.MenuItem;
 
 import com.sdx.mobile.tucao.R;
 import com.sdx.mobile.tucao.adapter.GalleryAdapter;
-import com.sdx.mobile.tucao.base.BaseActivity;
 import com.sdx.mobile.tucao.base.BaseToolBarActivity;
 import com.sdx.mobile.tucao.util.Toaster;
 import com.sdx.mobile.tucao.widget.SpaceItemDecoration;
@@ -38,7 +37,7 @@ public class GalleryActivity extends BaseToolBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycleview);
         Intent intent = getIntent();
-        mLimit = intent.getIntExtra("", 10);
+        mLimit = intent.getIntExtra(INTENT_LIMIT_EXTRA, 9);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         mRecyclerView.setHasFixedSize(true);
@@ -65,7 +64,7 @@ public class GalleryActivity extends BaseToolBarActivity {
                 return false;
             }
             if (imageList.size() > mLimit) {
-                Toaster.show(this, R.string.string_picker_image_msg_count_text, mLimit);
+                Toaster.show(this, getString(R.string.string_picker_image_msg_count_text, mLimit));
                 return false;
             }
 

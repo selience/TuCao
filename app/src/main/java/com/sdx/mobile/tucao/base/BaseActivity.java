@@ -2,14 +2,13 @@ package com.sdx.mobile.tucao.base;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
 import com.sdx.mobile.tucao.api.APIService;
 import com.sdx.mobile.tucao.app.ApplicationModule;
 import com.sdx.mobile.tucao.callback.ResponseCallback;
 import com.sdx.mobile.tucao.callback.TaskListener;
 import com.sdx.mobile.tucao.constant.Constants;
 import com.sdx.mobile.tucao.model.Result;
-
+import com.umeng.analytics.MobclickAgent;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -37,18 +36,22 @@ public class BaseActivity extends AppCompatActivity implements TaskListener, Con
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
     protected void onDestroy() {
         mSubscriptions.unsubscribe();
         super.onDestroy();
     }
-
-   /* protected void execute(Observable observable, String taskName) {
-        Subscription subscription = observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new ResponseCallback(taskName, this));
-        addSubscription(subscription);
-    }*/
 
     protected void execute(Observable observable, final Class clazz, String taskName) {
         Subscription subscription = observable
