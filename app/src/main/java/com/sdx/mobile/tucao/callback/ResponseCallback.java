@@ -1,7 +1,9 @@
 package com.sdx.mobile.tucao.callback;
 
-import com.sdx.mobile.tucao.model.Result;
+import com.sdx.mobile.tucao.model.HttpResult;
+
 import java.lang.ref.WeakReference;
+
 import rx.Observer;
 
 /**
@@ -10,7 +12,7 @@ import rx.Observer;
  * Date: 2016/3/8 18:00
  * Desc:
  */
-public class ResponseCallback implements Observer<Result> {
+public class ResponseCallback implements Observer<HttpResult> {
     private String mTaskName;
     private WeakReference<TaskListener> mWeakReference;
 
@@ -32,7 +34,7 @@ public class ResponseCallback implements Observer<Result> {
     }
 
     @Override
-    public void onNext(Result result) {
+    public void onNext(HttpResult result) {
         TaskListener taskListener = mWeakReference.get();
         if (taskListener != null) {
             taskListener.onSuccess(mTaskName, result);

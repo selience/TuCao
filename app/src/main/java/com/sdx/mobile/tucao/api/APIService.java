@@ -1,9 +1,13 @@
 package com.sdx.mobile.tucao.api;
 
-import com.sdx.mobile.tucao.model.Result;
-
+import com.sdx.mobile.tucao.model.CommentModel;
+import com.sdx.mobile.tucao.model.HttpResult;
+import com.sdx.mobile.tucao.model.TopicDetail;
+import com.sdx.mobile.tucao.model.TopicModel;
+import com.sdx.mobile.tucao.model.TopicWord;
+import com.sdx.mobile.tucao.model.UserModel;
+import java.util.List;
 import java.util.Map;
-
 import okhttp3.RequestBody;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -30,47 +34,47 @@ public interface APIService {
      */
     @Multipart
     @POST("common/uploadImg.html")
-    Observable<Result> upload(@Part("image\"; filename=\"image.png\"")
-                              RequestBody file,
-                              @QueryMap Map<String, String> query);
+    Observable<HttpResult<String>> upload(@Part("image\"; filename=\"image.png\"")
+                                          RequestBody file,
+                                          @QueryMap Map<String, String> query);
 
     /**
      * 注册
      */
     @GET("user/register.html")
-    Observable<Result> userRegister(@QueryMap Map<String, String> query);
+    Observable<HttpResult<UserModel>> userRegister(@QueryMap Map<String, String> query);
 
     /**
      * 首页数据
      */
     @GET("common/indexData.html")
-    Observable<Result> obtainIndexData(@QueryMap Map<String, String> query);
+    Observable<HttpResult<List<TopicModel>>> obtainIndexData(@QueryMap Map<String, String> query);
 
     /**
      * 评论列表
      */
     @GET("comment/list.html")
-    Observable<Result> obtainCommentList(@QueryMap Map<String, String> query);
+    Observable<HttpResult<List<CommentModel>>> obtainCommentList(@QueryMap Map<String, String> query);
 
     /**
      * 赞某个吐槽
      */
     @GET("tucao/up.html")
-    Observable<Result> handleUpTopic(@QueryMap Map<String, String> query);
+    Observable<HttpResult<String>> handleUpTopic(@QueryMap Map<String, String> query);
 
     /**
      * 踩某个吐槽
      */
     @GET("tucao/down.html")
-    Observable<Result> handleDownTopic(@QueryMap Map<String, String> query);
+    Observable<HttpResult<String>> handleDownTopic(@QueryMap Map<String, String> query);
 
     /**
      * 发表吐槽
      */
     @FormUrlEncoded
     @POST("tucao/publish.html")
-    Observable<Result> publishTopic(@FieldMap Map<String, String> field,
-                                    @QueryMap Map<String, String> query);
+    Observable<HttpResult<String>> publishTopic(@FieldMap Map<String, String> field,
+                                                @QueryMap Map<String, String> query);
 
     /**
      * 主题详情
@@ -79,7 +83,7 @@ public interface APIService {
      * @return
      */
     @GET("subject/detail.html")
-    Observable<Result> obtainTopicDetail(@QueryMap Map<String, String> query);
+    Observable<HttpResult<TopicDetail>> obtainTopicDetail(@QueryMap Map<String, String> query);
 
     /**
      * 发表评论
@@ -89,8 +93,8 @@ public interface APIService {
      */
     @FormUrlEncoded
     @POST("comment/publish.html")
-    Observable<Result> publishComment(@FieldMap Map<String, String> field,
-                                      @QueryMap Map<String, String> query);
+    Observable<HttpResult<String>> publishComment(@FieldMap Map<String, String> field,
+                                                  @QueryMap Map<String, String> query);
 
     /**
      * 搜索主题
@@ -101,6 +105,6 @@ public interface APIService {
      */
     @FormUrlEncoded
     @POST("subject/search.html")
-    Observable<Result> searchTopicList(@FieldMap Map<String, String> field,
-                                       @QueryMap Map<String, String> query);
+    Observable<HttpResult<List<TopicWord>>> searchTopicList(@FieldMap Map<String, String> field,
+                                                            @QueryMap Map<String, String> query);
 }

@@ -7,12 +7,11 @@ import com.sdx.mobile.tucao.app.ApplicationModule;
 import com.sdx.mobile.tucao.callback.ResponseCallback;
 import com.sdx.mobile.tucao.callback.TaskListener;
 import com.sdx.mobile.tucao.constant.Constants;
-import com.sdx.mobile.tucao.model.Result;
+import com.sdx.mobile.tucao.model.HttpResult;
 import com.umeng.analytics.MobclickAgent;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -53,16 +52,10 @@ public class BaseActivity extends AppCompatActivity implements TaskListener, Con
         super.onDestroy();
     }
 
-    protected void execute(Observable observable, final Class clazz, String taskName) {
+    protected void executeTask(Observable observable, String taskName) {
         Subscription subscription = observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(new Func1<Result, Result>() {
-                    @Override
-                    public Result call(Result result) {
-                        return result.setValue(Result.parse(result.getData(), clazz));
-                    }
-                })
                 .subscribe(new ResponseCallback(taskName, this));
         addSubscription(subscription);
     }
@@ -73,7 +66,7 @@ public class BaseActivity extends AppCompatActivity implements TaskListener, Con
 
 
     @Override
-    public void onSuccess(String taskName, Result response) {
+    public void onSuccess(String taskName, HttpResult response) {
     }
 
     @Override

@@ -9,7 +9,6 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sdx.mobile.tucao.R;
@@ -17,12 +16,11 @@ import com.sdx.mobile.tucao.adapter.TopicListAdapter;
 import com.sdx.mobile.tucao.app.GlobalContext;
 import com.sdx.mobile.tucao.base.BaseToolBarActivity;
 import com.sdx.mobile.tucao.model.CommentModel;
+import com.sdx.mobile.tucao.model.HttpResult;
 import com.sdx.mobile.tucao.model.RequestParams;
-import com.sdx.mobile.tucao.model.Result;
 import com.sdx.mobile.tucao.model.Section;
 import com.sdx.mobile.tucao.model.TopicDetail;
 import com.sdx.mobile.tucao.model.TopicModel;
-import com.sdx.mobile.tucao.model.UserModel;
 import com.sdx.mobile.tucao.util.DebugLog;
 import com.sdx.mobile.tucao.util.Toaster;
 import com.sdx.mobile.tucao.util.UIUtils;
@@ -30,9 +28,7 @@ import com.sdx.mobile.tucao.widget.CommentPopupWindow;
 import com.sdx.mobile.tucao.widget.CommentPopupWindow.EventCommentData;
 import com.sdx.mobile.tucao.widget.EndlessScrollListener;
 import com.sdx.mobile.tucao.widget.TopicPopupWindow;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -113,7 +109,7 @@ public class DetailActivity extends BaseToolBarActivity implements
         params.addParam("page", mPageNo + "");
         params.addParam("order", mOrder);
         params.addParam("auth", GlobalContext.getInstance().getUserAuth());
-        execute(mService.obtainTopicDetail(params.query()), TopicDetail.class, GET_DETAIL_DATA_TASK);
+        executeTask(mService.obtainTopicDetail(params.query()), GET_DETAIL_DATA_TASK);
     }
 
     private void obtainCommentList(int tid, int max_id) {
@@ -121,21 +117,21 @@ public class DetailActivity extends BaseToolBarActivity implements
         params.addParam("tid", tid + "");
         params.addParam("max_id", max_id + "");
         params.addParam("auth", GlobalContext.getInstance().getUserAuth());
-        execute(mService.obtainCommentList(params.query()), CommentModel.class, GET_COMMENT_DATA_TASK);
+        executeTask(mService.obtainCommentList(params.query()), GET_COMMENT_DATA_TASK);
     }
 
     private void handleUpTopic(int tid) {
         RequestParams params = new RequestParams();
         params.addParam("tid", tid + "");
         params.addParam("auth", GlobalContext.getInstance().getUserAuth());
-        execute(mService.handleUpTopic(params.query()), null, HANDLE_UP_TOPIC_TASK);
+        executeTask(mService.handleUpTopic(params.query()), HANDLE_UP_TOPIC_TASK);
     }
 
     private void handleDownTopic(int tid) {
         RequestParams params = new RequestParams();
         params.addParam("tid", tid + "");
         params.addParam("auth", GlobalContext.getInstance().getUserAuth());
-        execute(mService.handleDownTopic(params.query()), null, HANDLE_DOWN_TOPIC_TASK);
+        executeTask(mService.handleDownTopic(params.query()), HANDLE_DOWN_TOPIC_TASK);
     }
 
     private void publishComment(int tid, String content) {
@@ -143,7 +139,7 @@ public class DetailActivity extends BaseToolBarActivity implements
         params.addParam("tid", tid + "");
         params.addField("text", content);
         params.addParam("auth", GlobalContext.getInstance().getUserAuth());
-        execute(mService.publishComment(params.fields(), params.query()), null, PUBLISH_COMMENT_TASK);
+        executeTask(mService.publishComment(params.fields(), params.query()), PUBLISH_COMMENT_TASK);
     }
 
     private void updateList(TopicDetail topicDetail) {
@@ -256,17 +252,17 @@ public class DetailActivity extends BaseToolBarActivity implements
     }
 
     @Override
-    public void onSuccess(String taskName, Result result) {
+    public void onSuccess(String taskName, HttpResult result) {
         if (result.isOk()) {
             if (taskName.equals(GET_DETAIL_DATA_TASK)) {
                 mIsEnd = result.isEnd();
                 mRefreshLayout.setRefreshing(false);
-                updateList((TopicDetail) result.getValue());
+                updateList((TopicDetail) result.getData());
             } else if (taskName.equals(GET_COMMENT_DATA_TASK)) {
-                updateCommentList((List<CommentModel>) result.getValue(), result.getMax_id());
+                updateCommentList((List<CommentModel>) result.getData(), result.getMax_id());
             } else if (taskName.equals(PUBLISH_COMMENT_TASK)) {
                 // 插入评论内容
-                JSONObject json = JSON.parseObject(result.getData());
+                JSONObject json = JSON.parseObject(result.getData().toString());
                 CommentModel commentModel = new CommentModel();
                 commentModel.setId(json.getIntValue("id"));
                 commentModel.setText(mCommentWindow.getCommentData());
@@ -277,7 +273,7 @@ public class DetailActivity extends BaseToolBarActivity implements
 
                 Toaster.show(this, R.string.string_view_topic_detail_comment_success);
             } else if (taskName.equals(HANDLE_UP_TOPIC_TASK) || taskName.equals(HANDLE_DOWN_TOPIC_TASK)) {
-                mTopicModel.updateCount(Integer.parseInt(result.getData()));
+                mTopicModel.updateCount(Integer.parseInt(result.getData().toString()));
                 mListAdapter.notifyDataSetChanged();
                 Toaster.show(this, result.getMsg());
             }

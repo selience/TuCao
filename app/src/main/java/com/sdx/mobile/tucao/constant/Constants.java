@@ -9,4 +9,6 @@ package com.sdx.mobile.tucao.constant;
 public interface Constants extends IntentConstants {
 
     String FILE_TEMP_DIR = "temp";
+
+    String FILE_THUMBNAIL_DIR = "thumbnail";
 }

@@ -18,8 +18,8 @@ import com.sdx.mobile.tucao.adapter.TopicListAdapter.EventData;
 import com.sdx.mobile.tucao.app.GlobalContext;
 import com.sdx.mobile.tucao.base.BaseActivity;
 import com.sdx.mobile.tucao.model.CommentModel;
+import com.sdx.mobile.tucao.model.HttpResult;
 import com.sdx.mobile.tucao.model.RequestParams;
-import com.sdx.mobile.tucao.model.Result;
 import com.sdx.mobile.tucao.model.Section;
 import com.sdx.mobile.tucao.model.TopicModel;
 import com.sdx.mobile.tucao.model.TopicWord;
@@ -120,14 +120,14 @@ public class MainActivity extends BaseActivity implements
     private void userRegister() {
         if (!GlobalContext.getInstance().isLogin()) {
             RequestParams params = new RequestParams();
-            execute(mService.userRegister(params.query()), UserModel.class, REGISTER_USER_TASK);
+            executeTask(mService.userRegister(params.query()), REGISTER_USER_TASK);
         }
     }
 
     private void obtainIndexData() {
         RequestParams params = new RequestParams();
         params.addParam("page", mPageNo + "");
-        execute(mService.obtainIndexData(params.query()), TopicModel.class, GET_INDEX_DATA_TASK);
+        executeTask(mService.obtainIndexData(params.query()), GET_INDEX_DATA_TASK);
     }
 
     private void obtainCommentList(int tid, int max_id) {
@@ -135,21 +135,21 @@ public class MainActivity extends BaseActivity implements
         params.addParam("tid", tid + "");
         params.addParam("max_id", max_id + "");
         params.addParam("auth", GlobalContext.getInstance().getUserAuth());
-        execute(mService.obtainCommentList(params.query()), CommentModel.class, GET_COMMENT_DATA_TASK);
+        executeTask(mService.obtainCommentList(params.query()), GET_COMMENT_DATA_TASK);
     }
 
     private void handleUpTopic(int tid) {
         RequestParams params = new RequestParams();
         params.addParam("tid", tid + "");
         params.addParam("auth", GlobalContext.getInstance().getUserAuth());
-        execute(mService.handleUpTopic(params.query()), null, HANDLE_UP_TOPIC_TASK);
+        executeTask(mService.handleUpTopic(params.query()), HANDLE_UP_TOPIC_TASK);
     }
 
     private void handleDownTopic(int tid) {
         RequestParams params = new RequestParams();
         params.addParam("tid", tid + "");
         params.addParam("auth", GlobalContext.getInstance().getUserAuth());
-        execute(mService.handleDownTopic(params.query()), null, HANDLE_DOWN_TOPIC_TASK);
+        executeTask(mService.handleDownTopic(params.query()), HANDLE_DOWN_TOPIC_TASK);
     }
 
     private void publishComment(int tid, String content) {
@@ -157,14 +157,14 @@ public class MainActivity extends BaseActivity implements
         params.addParam("tid", tid + "");
         params.addField("text", content);
         params.addParam("auth", GlobalContext.getInstance().getUserAuth());
-        execute(mService.publishComment(params.fields(), params.query()), null, PUBLISH_COMMENT_TASK);
+        executeTask(mService.publishComment(params.fields(), params.query()), PUBLISH_COMMENT_TASK);
     }
 
     private void searchTopicList(String keyword) {
         RequestParams params = new RequestParams();
         params.addField("keyword", keyword);
         params.addParam("auth", GlobalContext.getInstance().getUserAuth());
-        execute(mService.searchTopicList(params.fields(), params.query()), TopicWord.class, SEARCH_TOPIC_LIST_TASK);
+        executeTask(mService.searchTopicList(params.fields(), params.query()), SEARCH_TOPIC_LIST_TASK);
     }
 
 
@@ -276,18 +276,18 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onSuccess(String taskName, Result result) {
+    public void onSuccess(String taskName, HttpResult result) {
         if (result.isOk()) {
             if (taskName.equals(REGISTER_USER_TASK)) {
-                GlobalContext.getInstance().setmUserModel((UserModel) result.getValue());
+                GlobalContext.getInstance().setmUserModel((UserModel) result.getData());
             } else if (taskName.equals(GET_INDEX_DATA_TASK)) {
                 mIsEnd = result.isEnd();
-                updateList((List<TopicModel>) result.getValue());
+                updateList((List<TopicModel>) result.getData());
             } else if (taskName.equals(GET_COMMENT_DATA_TASK)) {
-                updateCommentList((List<CommentModel>) result.getValue(), result.getMax_id());
+                updateCommentList((List<CommentModel>) result.getData(), result.getMax_id());
             } else if (taskName.equals(PUBLISH_COMMENT_TASK)) {
                 // 插入评论内容
-                JSONObject json = JSON.parseObject(result.getData());
+                JSONObject json = JSON.parseObject(result.getData().toString());
                 CommentModel commentModel = new CommentModel();
                 commentModel.setId(json.getIntValue("id"));
                 commentModel.setText(mCommentWindow.getCommentData());
@@ -298,9 +298,9 @@ public class MainActivity extends BaseActivity implements
 
                 Toaster.show(this, R.string.string_view_topic_detail_comment_success);
             } else if (taskName.equals(SEARCH_TOPIC_LIST_TASK)) {
-                updateTopicWords((List<TopicWord>) result.getValue());
+                updateTopicWords((List<TopicWord>) result.getData());
             } else if (taskName.equals(HANDLE_UP_TOPIC_TASK) || taskName.equals(HANDLE_DOWN_TOPIC_TASK)) {
-                mTopicModel.updateCount(Integer.parseInt(result.getData()));
+                mTopicModel.updateCount(Integer.parseInt(result.getData().toString()));
                 mListAdapter.notifyDataSetChanged();
                 Toaster.show(this, result.getMsg());
             }

@@ -76,6 +76,7 @@ public class BaseFragment extends Fragment {
         super.onDetach();
     }
 
+
     public void addSubscription(Subscription subscription) {
         mSubscriptions.add(subscription);
     }

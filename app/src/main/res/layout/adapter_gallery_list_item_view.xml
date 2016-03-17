@@ -18,5 +18,6 @@
         android:layout_gravity="right|top"
         android:layout_margin="8dp"
         android:button="@drawable/btn_check_selector"
+        android:clickable="false"
         android:duplicateParentState="true" />
 </FrameLayout>

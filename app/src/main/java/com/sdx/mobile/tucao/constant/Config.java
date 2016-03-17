@@ -8,5 +8,5 @@ package com.sdx.mobile.tucao.constant;
  */
 public class Config {
 
-    public static final String BASE_URL = "http://api.tc.chenmm.cn/";
+    public static final String BASE_URL = "http://api.keng315.com/";
 }

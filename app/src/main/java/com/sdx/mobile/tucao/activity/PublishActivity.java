@@ -12,13 +12,15 @@ import android.widget.TextView;
 import com.sdx.mobile.tucao.R;
 import com.sdx.mobile.tucao.app.GlobalContext;
 import com.sdx.mobile.tucao.base.BaseToolBarActivity;
+import com.sdx.mobile.tucao.model.HttpResult;
 import com.sdx.mobile.tucao.model.RequestParams;
-import com.sdx.mobile.tucao.model.Result;
+import com.sdx.mobile.tucao.util.BitmapUtils;
 import com.sdx.mobile.tucao.util.Toaster;
 import com.sdx.mobile.tucao.widget.ExtendMediaPicker;
 import com.sdx.mobile.tucao.widget.UIPickImageView;
 import org.json.JSONArray;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -74,9 +76,9 @@ public class PublishActivity extends BaseToolBarActivity implements ExtendMediaP
 
     private void uploadImage() {
         Observable observable = Observable.from(mPickImageView.getImageList())
-                .flatMap(new Func1<String, Observable<Result>>() {
+                .flatMap(new Func1<String, Observable<HttpResult<String>>>() {
                     @Override
-                    public Observable<Result> call(String s) {
+                    public Observable<HttpResult<String>> call(String s) {
                         RequestParams params = new RequestParams();
                         params.addParam("type", "tucao");
                         RequestBody fileBody = RequestBody.create(
@@ -84,7 +86,7 @@ public class PublishActivity extends BaseToolBarActivity implements ExtendMediaP
                         return mService.upload(fileBody, params.query());
                     }
                 });
-        execute(observable, null, START_PHOTO_UPLOAD_TASK);
+        executeTask(observable, START_PHOTO_UPLOAD_TASK);
     }
 
     private void publishTopic() {
@@ -104,11 +106,11 @@ public class PublishActivity extends BaseToolBarActivity implements ExtendMediaP
         params.addField("text", mPostContentView.getText().toString());
         params.addField("imgs", jsonArray.toString());
         params.addParam("auth", GlobalContext.getInstance().getUserAuth());
-        execute(mService.publishTopic(params.fields(), params.query()), null, PUBLISH_TOPIC_TASK);
+        executeTask(mService.publishTopic(params.fields(), params.query()), PUBLISH_TOPIC_TASK);
     }
 
     @Override
-    public void onSuccess(String taskName, Result result) {
+    public void onSuccess(String taskName, HttpResult result) {
         if (result.isOk()) {
             if (taskName.equals(START_PHOTO_UPLOAD_TASK)) {
                 // 处理上传图片
@@ -144,9 +146,17 @@ public class PublishActivity extends BaseToolBarActivity implements ExtendMediaP
 
     @Override
     public void onMultipleMediaChanged(List<String> imageList) {
-        mPickImageView.addItemView(imageList);
+        if (imageList != null && imageList.size() > 0) {
+            List<String> dataList = new ArrayList<>();
+            // 压缩图片大小
+            for (String imagePath : imageList) {
+                dataList.add(BitmapUtils.storeImage(imagePath));
+            }
 
-        uploadImage();
+            mPickImageView.addItemView(dataList);
+            // 开始上传
+            uploadImage();
+        }
     }
 
     @Override

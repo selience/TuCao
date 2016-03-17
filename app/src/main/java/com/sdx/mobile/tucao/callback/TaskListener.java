@@ -1,6 +1,6 @@
 package com.sdx.mobile.tucao.callback;
 
-import com.sdx.mobile.tucao.model.Result;
+import com.sdx.mobile.tucao.model.HttpResult;
 
 /**
  * Name: TaskListener
@@ -10,7 +10,7 @@ import com.sdx.mobile.tucao.model.Result;
  */
 public interface TaskListener {
 
-    void onSuccess(String taskName, Result result);
+    void onSuccess(String taskName, HttpResult result);
 
     void onFailure(String taskName, Throwable ex);
 }
