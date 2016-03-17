@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">吐槽</string>
+    <string name="app_name">吐槽星</string>
 
     <string name="string_common_ok">确定</string>
     <string name="string_search_hint_text">寻觅吐槽对象</string>
