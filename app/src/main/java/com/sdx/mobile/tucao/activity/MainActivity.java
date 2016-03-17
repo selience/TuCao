@@ -1,6 +1,5 @@
 package com.sdx.mobile.tucao.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
@@ -8,7 +7,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sdx.mobile.tucao.R;
@@ -25,15 +23,14 @@ import com.sdx.mobile.tucao.model.TopicModel;
 import com.sdx.mobile.tucao.model.TopicWord;
 import com.sdx.mobile.tucao.model.UserModel;
 import com.sdx.mobile.tucao.util.DebugLog;
+import com.sdx.mobile.tucao.util.JumpUtils;
 import com.sdx.mobile.tucao.util.Toaster;
 import com.sdx.mobile.tucao.widget.CommentPopupWindow;
 import com.sdx.mobile.tucao.widget.CommentPopupWindow.EventCommentData;
 import com.sdx.mobile.tucao.widget.EndlessScrollListener;
 import com.sdx.mobile.tucao.widget.TopicPopupWindow;
 import com.sdx.mobile.tucao.widget.TopicPopupWindow.EventPopupData;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
@@ -102,7 +99,7 @@ public class MainActivity extends BaseActivity implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TopicWord topicWord = (TopicWord) parent.getItemAtPosition(position);
                 if (topicWord != null) {
-                    startTopicDetailAction(topicWord.getId());
+                    JumpUtils.startTopicDetailAction(MainActivity.this, topicWord.getId());
                 }
             }
         });
@@ -257,7 +254,7 @@ public class MainActivity extends BaseActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Section section = (Section) parent.getItemAtPosition(position);
         if (section.getName().equals(Section.SECTION_TOPIC)) {
-            startTopicDetailAction(((TopicModel) section.getValue()).getSid());
+            JumpUtils.startTopicDetailAction(this, ((TopicModel) section.getValue()).getSid());
         }
     }
 
@@ -266,13 +263,6 @@ public class MainActivity extends BaseActivity implements
         if (!TextUtils.isEmpty(s)) {
             searchTopicList(s.toString());
         }
-    }
-
-
-    private void startTopicDetailAction(int topicId) {
-        Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra(INTENT_TOPIC_ID, topicId);
-        startActivity(intent);
     }
 
     @Override

@@ -5,12 +5,12 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.sdx.mobile.tucao.R;
 import com.sdx.mobile.tucao.util.DeviceUtils;
-
+import com.sdx.mobile.tucao.util.JumpUtils;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,6 +54,7 @@ public class UITopicImageView extends FrameLayout {
         }
 
         removeAllViews();
+        setTag(imageList);
         setVisibility(View.VISIBLE);
         LayoutParams params = null;
 
@@ -62,7 +63,7 @@ public class UITopicImageView extends FrameLayout {
             params = new LayoutParams(mColumnWidth, mColumnWidth);
             params.leftMargin = (mColumnWidth + mSpaceWidth) * (i % COLUMN_SIZE);
             params.topMargin = (mSpaceWidth + mColumnWidth) * (i / COLUMN_SIZE);
-            addView(createView(imageList.get(i)), params);
+            addView(createView(i, imageList.get(i)), params);
         }
     }
 
@@ -83,9 +84,15 @@ public class UITopicImageView extends FrameLayout {
         }
     }
 
-    private View createView(final String imageUrl) {
+    private View createView(final int position, final String imageUrl) {
         ImageView imageView = (ImageView) View.inflate(context, R.layout.widget_topic_image_view, null);
         updatePhoto(imageView, imageUrl);
+        imageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                JumpUtils.startPhotoAction(v.getContext(), position, (ArrayList<String>) getTag());
+            }
+        });
         return imageView;
     }
 

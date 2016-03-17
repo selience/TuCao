@@ -22,6 +22,7 @@ import com.sdx.mobile.tucao.model.Section;
 import com.sdx.mobile.tucao.model.TopicDetail;
 import com.sdx.mobile.tucao.model.TopicModel;
 import com.sdx.mobile.tucao.util.DebugLog;
+import com.sdx.mobile.tucao.util.JumpUtils;
 import com.sdx.mobile.tucao.util.Toaster;
 import com.sdx.mobile.tucao.util.UIUtils;
 import com.sdx.mobile.tucao.widget.CommentPopupWindow;
@@ -235,9 +236,7 @@ public class DetailActivity extends BaseToolBarActivity implements
         switch (view.getId()) {
             case R.id.id_detail_post_view:
                 if (!TextUtils.isEmpty(mTopicName)) {
-                    Intent intent = new Intent(this, PublishActivity.class);
-                    intent.putExtra(INTENT_TOPIC_SUBJECT, mTopicName);
-                    startActivity(intent);
+                    JumpUtils.startPublishAction(this, mTopicName);
                 }
                 break;
         }

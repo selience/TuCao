@@ -1,10 +1,10 @@
 package com.sdx.mobile.tucao.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import com.sdx.mobile.tucao.R;
 import com.sdx.mobile.tucao.base.BaseActivity;
+import com.sdx.mobile.tucao.util.JumpUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -30,7 +30,7 @@ public class SplashActivity extends BaseActivity implements Runnable {
 
     @Override
     public void run() {
-        startActivity(new Intent(this, MainActivity.class));
+        JumpUtils.startMainActivity(this);
         finish();
     }
 }

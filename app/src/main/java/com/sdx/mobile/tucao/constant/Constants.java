@@ -11,4 +11,9 @@ public interface Constants extends IntentConstants {
     String FILE_TEMP_DIR = "temp";
 
     String FILE_THUMBNAIL_DIR = "thumbnail";
+
+    String EXTRA_IMAGE_POSTION = "position";
+
+    String EXTRA_IMAGE_LIST = "imageList";
+
 }
