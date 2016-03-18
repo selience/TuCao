@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListView;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sdx.mobile.tucao.R;
@@ -22,7 +23,9 @@ import com.sdx.mobile.tucao.model.Section;
 import com.sdx.mobile.tucao.model.TopicModel;
 import com.sdx.mobile.tucao.model.TopicWord;
 import com.sdx.mobile.tucao.model.UserModel;
+import com.sdx.mobile.tucao.util.ClickExitHelper;
 import com.sdx.mobile.tucao.util.DebugLog;
+import com.sdx.mobile.tucao.util.EditTextUtils;
 import com.sdx.mobile.tucao.util.JumpUtils;
 import com.sdx.mobile.tucao.util.Toaster;
 import com.sdx.mobile.tucao.widget.CommentPopupWindow;
@@ -30,7 +33,9 @@ import com.sdx.mobile.tucao.widget.CommentPopupWindow.EventCommentData;
 import com.sdx.mobile.tucao.widget.EndlessScrollListener;
 import com.sdx.mobile.tucao.widget.TopicPopupWindow;
 import com.sdx.mobile.tucao.widget.TopicPopupWindow.EventPopupData;
+
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
@@ -44,7 +49,7 @@ import de.greenrobot.event.EventBus;
  * Desc:
  */
 public class MainActivity extends BaseActivity implements
-        AdapterView.OnItemClickListener,
+        AdapterView.OnItemClickListener, Runnable,
         EndlessScrollListener.OnLoadMoreListener,
         SwipeRefreshLayout.OnRefreshListener {
     private static final String GET_INDEX_DATA_TASK = "GET_INDEX_DATA";
@@ -64,12 +69,14 @@ public class MainActivity extends BaseActivity implements
 
     private int mPageNo = 1;
     private boolean mIsEnd;
+    private boolean hasResult;
     private int mSelectPosition;
     private TopicModel mTopicModel;
     private TopicListAdapter mListAdapter;
     private SearchTopicAdapter mTopicAdapter;
     private TopicPopupWindow mPopupWindow;
     private CommentPopupWindow mCommentWindow;
+    private ClickExitHelper mExitHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +91,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void setupView() {
+        mExitHelper = new ClickExitHelper(this);
         mPopupWindow = new TopicPopupWindow(this);
         mCommentWindow = new CommentPopupWindow(this);
 
@@ -94,6 +102,7 @@ public class MainActivity extends BaseActivity implements
         mListView.setAdapter(mListAdapter);
         mListView.setOnScrollListener(new EndlessScrollListener(this));
 
+        EditTextUtils.onDone(mSearchTextView, this);
         mSearchTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -164,14 +173,16 @@ public class MainActivity extends BaseActivity implements
         executeTask(mService.searchTopicList(params.fields(), params.query()), SEARCH_TOPIC_LIST_TASK);
     }
 
-
     private void updateList(List<TopicModel> topicModels) {
         mRefreshLayout.setRefreshing(false);
+
         for (TopicModel topicModel : topicModels) {
+            List<CommentModel> dataList = topicModel.getComment_list();
             mListAdapter.addItem(new Section(Section.SECTION_TOPIC, topicModel));
 
-            for (CommentModel comment : topicModel.getComment_list()) {
-                mListAdapter.addItem(new Section(Section.SECTION_COMMENT, comment));
+            for (int i = 0; i < dataList.size(); i++) {
+                boolean state = (topicModel.getComment_max_id() <= 0) && (i == dataList.size() - 1);
+                mListAdapter.addItem(new Section(Section.SECTION_COMMENT, dataList.get(i), state));
             }
 
             if (topicModel.getComment_max_id() > 0) {
@@ -183,9 +194,13 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void updateCommentList(List<CommentModel> dataList, int max_id) {
-        for (CommentModel comment : dataList) {
-            mListAdapter.addItem(mSelectPosition, new Section(Section.SECTION_COMMENT, comment));
+        for (int i = 0; i < dataList.size(); i++) {
+            // 判断增加视图间距
+            boolean state = (max_id <= 0) && (i == dataList.size() - 1);
+            // 添加评论内容
+            mListAdapter.addItem(mSelectPosition + i, new Section(Section.SECTION_COMMENT, dataList.get(i), state));
         }
+
         if (max_id > 0) {
             mTopicModel.setComment_max_id(max_id);
         } else {
@@ -195,6 +210,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void updateTopicWords(List<TopicWord> topicWords) {
+        hasResult = !topicWords.isEmpty();
         mTopicAdapter.setItems(topicWords);
         mTopicAdapter.setWords(mSearchTextView.getText().toString());
         mTopicAdapter.notifyDataSetChanged();
@@ -214,6 +230,14 @@ public class MainActivity extends BaseActivity implements
     public void loadMoreData() {
         mPageNo++;
         obtainIndexData();
+    }
+
+    @Override
+    public void run() {
+        if (hasResult) return;
+        // 没有搜索结果进行创建
+        String topicName = mSearchTextView.getText().toString();
+        JumpUtils.startPublishAction(this, topicName);
     }
 
     public void onEvent(EventData eventData) {
@@ -303,5 +327,12 @@ public class MainActivity extends BaseActivity implements
     protected void onDestroy() {
         EventBus.getDefault().unregister(this);
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mExitHelper.onBackPressed()) {
+            super.onBackPressed();
+        }
     }
 }

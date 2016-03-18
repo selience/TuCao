@@ -132,6 +132,10 @@ public class TopicListAdapter extends BaseListAdapter<Section, TopicListAdapter.
         viewHolder.mTitleTextView.setText(commentModel.getNick_name());
         viewHolder.mContentTextView.setText(commentModel.getText());
 
+        //  判断是否添加评论分隔符
+        viewHolder.mItemDivideView1.setVisibility(section.isFlag() ? View.GONE : View.VISIBLE);
+        viewHolder.mItemDivideView2.setVisibility(section.isFlag() ? View.VISIBLE : View.GONE);
+
         Glide.with(context).load(commentModel.getUser_face())
                 .placeholder(R.drawable.color_placeholder_drawable)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -187,6 +191,10 @@ public class TopicListAdapter extends BaseListAdapter<Section, TopicListAdapter.
         TextView mTitleTextView;
         @Bind(R.id.id_comment_text)
         TextView mContentTextView;
+        @Bind(R.id.id_item_divide_view1)
+        View mItemDivideView1;
+        @Bind(R.id.id_item_divide_view2)
+        View mItemDivideView2;
 
         public CommentHolder(View itemView) {
             ButterKnife.bind(this, itemView);

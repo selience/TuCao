@@ -154,10 +154,12 @@ public class DetailActivity extends BaseToolBarActivity implements
 
         List<TopicModel> topicModels = topicDetail.getList();
         for (TopicModel topicModel : topicModels) {
+            List<CommentModel> dataList = topicModel.getComment_list();
             mListAdapter.addItem(new Section(Section.SECTION_TOPIC, topicModel));
 
-            for (CommentModel comment : topicModel.getComment_list()) {
-                mListAdapter.addItem(new Section(Section.SECTION_COMMENT, comment));
+            for (int i = 0; i < dataList.size(); i++) {
+                boolean state = (topicModel.getComment_max_id() <= 0) && (i == dataList.size() - 1);
+                mListAdapter.addItem(new Section(Section.SECTION_COMMENT, dataList.get(i), state));
             }
 
             if (topicModel.getComment_max_id() > 0) {
@@ -169,9 +171,13 @@ public class DetailActivity extends BaseToolBarActivity implements
     }
 
     private void updateCommentList(List<CommentModel> dataList, int max_id) {
-        for (CommentModel comment : dataList) {
-            mListAdapter.addItem(mSelectPosition, new Section(Section.SECTION_COMMENT, comment));
+        for (int i = 0; i < dataList.size(); i++) {
+            // 判断增加视图间距
+            boolean state = (max_id <= 0) && (i == dataList.size() - 1);
+            // 添加评论内容
+            mListAdapter.addItem(mSelectPosition + i, new Section(Section.SECTION_COMMENT, dataList.get(i), state));
         }
+
         if (max_id > 0) {
             mTopicModel.setComment_max_id(max_id);
         } else {
