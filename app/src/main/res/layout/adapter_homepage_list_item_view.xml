@@ -57,6 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/id_topic_upcount"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:src="@drawable/ic_topic_button" />
 
