@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -13,6 +14,7 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.sdx.mobile.tucao.R;
 import com.sdx.mobile.tucao.constant.Constants;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -49,9 +51,7 @@ public class ImageFragment extends Fragment implements Constants {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         String imageUrl = getArguments().getString(EXTRA_IMAGE_URL);
-        if (imageUrl.endsWith("!small")) {
-            imageUrl = imageUrl.replace("small", "medium");
-        }
+        imageUrl = imageUrl.replace("!small", "");
 
         Glide.with(this).load(imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
