@@ -7,10 +7,12 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.PopupWindow;
 import com.sdx.mobile.tucao.R;
 import com.sdx.mobile.tucao.util.Toaster;
+import com.sdx.mobile.tucao.util.UIUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,17 +33,18 @@ public class CommentPopupWindow {
     private Context mContext;
     private PopupWindow mPopupWindow;
 
-    public CommentPopupWindow(Context context) {
+    public CommentPopupWindow(final Context context) {
         mContext = context;
-        View contentView = View.inflate(context, R.layout.adapter_homepage_comment_popup_view, null);
+        final View contentView = View.inflate(context, R.layout.adapter_homepage_comment_popup_view, null);
         ButterKnife.bind(this, contentView);
 
         mPopupWindow = new PopupWindow(contentView);
         mPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setFocusable(true);
-        mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         mPopupWindow.setOutsideTouchable(true);
+        mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mPopupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     public void setmTopicId(int mTopicId) {
@@ -51,6 +54,7 @@ public class CommentPopupWindow {
     public void showWindow(View anchor) {
         if (!mPopupWindow.isShowing()) {
             mPopupWindow.showAtLocation(anchor, Gravity.BOTTOM, 0, 0);
+            UIUtils.delayShowSoftInputFromWindow(mContentEditText, 0);
         }
     }
 

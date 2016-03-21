@@ -8,13 +8,16 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
 import com.sdx.mobile.tucao.R;
 import com.sdx.mobile.tucao.activity.PublishActivity;
 import com.sdx.mobile.tucao.base.BaseListAdapter;
 import com.sdx.mobile.tucao.constant.IntentConstants;
 import com.sdx.mobile.tucao.model.TopicWord;
 import com.sdx.mobile.tucao.util.UIUtils;
+
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -81,8 +84,8 @@ public class SearchTopicAdapter extends BaseListAdapter<TopicWord, SearchTopicAd
         if (itemType == ITEM_NORMAL) {
             return inflater.inflate(R.layout.adapter_homepage_topic_word_item_view, parent, false);
         } else {
-            View convertView = inflater.inflate(R.layout.adapter_homepage_topic_create_item_view, parent, false);
-            convertView.setOnClickListener(new View.OnClickListener() {
+            TextView textView = (TextView) inflater.inflate(R.layout.adapter_homepage_topic_create_item_view, parent, false);
+            textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, PublishActivity.class);
@@ -90,7 +93,11 @@ public class SearchTopicAdapter extends BaseListAdapter<TopicWord, SearchTopicAd
                     context.startActivity(intent);
                 }
             });
-            return convertView;
+
+            String text = UIUtils.getString(context, R.string.string_homepage_search_word_create_text, words);
+            textView.setText(UIUtils.formatText(text, words, R.color.color_yellow));
+
+            return textView;
         }
     }
 

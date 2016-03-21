@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_rootview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_background"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <FrameLayout
@@ -31,23 +33,36 @@
             android:textSize="14sp" />
     </FrameLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/id_swipeLayout"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
-            android:id="@+id/id_listview"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/id_swipeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:id="@+id/id_listview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:cacheColorHint="@android:color/transparent"
+                android:clipToPadding="false"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                android:fadingEdgeLength="0dp"
+                android:listSelector="@android:color/transparent"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:scrollbarStyle="outsideOverlay" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <ImageView
+            android:id="@+id/id_guide_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:cacheColorHint="@android:color/transparent"
-            android:clipToPadding="false"
-            android:divider="@null"
-            android:dividerHeight="0dp"
-            android:fadingEdgeLength="0dp"
-            android:listSelector="@android:color/transparent"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:scrollbarStyle="outsideOverlay" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:background="#b0000000"
+            android:scaleType="fitXY"
+            android:visibility="gone" />
+    </FrameLayout>
 </LinearLayout>

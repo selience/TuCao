@@ -1,11 +1,15 @@
 package com.sdx.mobile.tucao.activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.alibaba.fastjson.JSON;
@@ -23,10 +27,12 @@ import com.sdx.mobile.tucao.model.Section;
 import com.sdx.mobile.tucao.model.TopicModel;
 import com.sdx.mobile.tucao.model.TopicWord;
 import com.sdx.mobile.tucao.model.UserModel;
+import com.sdx.mobile.tucao.util.BitmapUtils;
 import com.sdx.mobile.tucao.util.ClickExitHelper;
 import com.sdx.mobile.tucao.util.DebugLog;
 import com.sdx.mobile.tucao.util.EditTextUtils;
 import com.sdx.mobile.tucao.util.JumpUtils;
+import com.sdx.mobile.tucao.util.SettingUtils;
 import com.sdx.mobile.tucao.util.Toaster;
 import com.sdx.mobile.tucao.widget.CommentPopupWindow;
 import com.sdx.mobile.tucao.widget.CommentPopupWindow.EventCommentData;
@@ -60,6 +66,8 @@ public class MainActivity extends BaseActivity implements
     private static final String PUBLISH_COMMENT_TASK = "PUBLISH_COMMENT_TASK";
     private static final String SEARCH_TOPIC_LIST_TASK = "SEARCH_TOPIC_LIST_TASK";
 
+    @Bind(R.id.id_guide_view)
+    ImageView mGuideView;
     @Bind(R.id.id_listview)
     ListView mListView;
     @Bind(R.id.id_swipeLayout)
@@ -70,7 +78,9 @@ public class MainActivity extends BaseActivity implements
     private int mPageNo = 1;
     private boolean mIsEnd;
     private boolean hasResult;
+    private boolean isFirst;
     private int mSelectPosition;
+    private Bitmap mGuideBitmap;
     private TopicModel mTopicModel;
     private TopicListAdapter mListAdapter;
     private SearchTopicAdapter mTopicAdapter;
@@ -86,6 +96,7 @@ public class MainActivity extends BaseActivity implements
         EventBus.getDefault().register(this);
 
         setupView();
+        showGuideView();
         userRegister();
         obtainIndexData();
     }
@@ -114,6 +125,26 @@ public class MainActivity extends BaseActivity implements
         });
 
         mRefreshLayout.setOnRefreshListener(this);
+    }
+
+
+    private void showGuideView() {
+        if (!SettingUtils.isFirstStatus(this)) {
+            isFirst = true;
+            mGuideBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_guide);
+            mGuideView.setImageBitmap(mGuideBitmap);
+            mGuideView.setVisibility(View.VISIBLE);
+            SettingUtils.storeFirstStatus(this);
+        }
+    }
+
+    private void hideGuideView() {
+        if (mGuideView.getVisibility() == View.VISIBLE) {
+            isFirst = false;
+            mGuideView.setVisibility(View.GONE);
+            mGuideView.setImageDrawable(null);
+            BitmapUtils.recycleBitmap(mGuideBitmap);
+        }
     }
 
     private void sendRequest() {
@@ -238,6 +269,15 @@ public class MainActivity extends BaseActivity implements
         // 没有搜索结果进行创建
         String topicName = mSearchTextView.getText().toString();
         JumpUtils.startPublishAction(this, topicName);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (!isFirst) {
+            return super.dispatchTouchEvent(ev);
+        }
+        hideGuideView();
+        return true;
     }
 
     public void onEvent(EventData eventData) {

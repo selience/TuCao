@@ -115,6 +115,20 @@ public class UIUtils implements Constants {
         return imagePath.substring(lastIndex + 1);
     }
 
+    public static void delayShowSoftInputFromWindow(final View view, final long delay) {
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showSoftInputFromWindow(view.getContext());
+            }
+        }, delay);
+    }
+
+    public static void showSoftInputFromWindow(Context context) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
     public static void hideSoftInputFromWindow(View view) {
         Context context = view.getContext();
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);

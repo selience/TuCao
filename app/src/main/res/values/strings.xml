@@ -4,13 +4,13 @@
     <string name="string_back_exit_text">再按一次退出应用</string>
 
     <string name="string_common_ok">确定</string>
-    <string name="string_search_hint_text">寻觅吐槽对象</string>
+    <string name="string_search_hint_text">创建/搜索吐槽的目标</string>
 
     <string name="string_homepage_list_item_upcount_text">%d赞</string>
     <string name="string_homepage_list_item_comment_count_text">(%d)</string>
     <string name="string_homepage_list_item_load_more_text">展开全部</string>
     <string name="string_homepage_search_word_count_text">%d个吐槽</string>
-    <string name="string_homepage_search_word_create_text">+创建新的吐槽</string>
+    <string name="string_homepage_search_word_create_text">+创建“%s”新的吐槽</string>
 
     <string name="string_homepage_popup_item_up_text">赞一个</string>
     <string name="string_homepage_popup_item_down_text">踩一脚</string>
@@ -25,7 +25,7 @@
     <string name="string_publish_content_success">发布吐槽内容成功</string>
 
     <string name="string_view_topic_detail_title">查看吐槽</string>
-    <string name="string_view_topic_detail_post_text">开喷</string>
+    <string name="string_view_topic_detail_post_text">吐槽</string>
     <string name="string_view_topic_detail_new_publish">最新发布</string>
     <string name="string_view_topic_detail_hot_topic">最热吐槽</string>
     <string name="string_view_topic_detail_topic_count">%d个吐槽</string>

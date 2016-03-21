@@ -9,6 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sdx.mobile.tucao.R;
@@ -29,7 +30,9 @@ import com.sdx.mobile.tucao.widget.CommentPopupWindow;
 import com.sdx.mobile.tucao.widget.CommentPopupWindow.EventCommentData;
 import com.sdx.mobile.tucao.widget.EndlessScrollListener;
 import com.sdx.mobile.tucao.widget.TopicPopupWindow;
+
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -63,6 +66,10 @@ public class DetailActivity extends BaseToolBarActivity implements
     RadioButton mOrderNewView;
     @Bind(R.id.id_detail_order_hot_view)
     RadioButton mOrderHotView;
+    @Bind(R.id.id_detail_order_view)
+    View mDetailOrderView;
+    @Bind(R.id.id_detail_post_view)
+    View mDetailPostView;
 
     private int mPageNo = 1;
     private int mTopicId;
@@ -168,6 +175,8 @@ public class DetailActivity extends BaseToolBarActivity implements
         }
 
         mListAdapter.notifyDataSetChanged();
+        mDetailOrderView.setVisibility(View.VISIBLE);
+        mDetailPostView.setVisibility(View.VISIBLE);
     }
 
     private void updateCommentList(List<CommentModel> dataList, int max_id) {
