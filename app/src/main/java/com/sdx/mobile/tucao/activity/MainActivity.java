@@ -292,6 +292,7 @@ public class MainActivity extends BaseActivity implements
             mPopupWindow.setmTopicModel(eventData.topicModel);
             mPopupWindow.showWindow(eventData.target);
         } else if (eventData.type.equals(EventData.TYPE_ADD_COMMENT)) {
+            this.mTopicModel = eventData.topicModel;
             this.mSelectPosition = eventData.position;
             mCommentWindow.setmTopicId(eventData.topicModel.getId());
             mCommentWindow.showWindow(getWindow().getDecorView());
@@ -340,6 +341,8 @@ public class MainActivity extends BaseActivity implements
             } else if (taskName.equals(GET_COMMENT_DATA_TASK)) {
                 updateCommentList((List<CommentModel>) result.getData(), result.getMax_id());
             } else if (taskName.equals(PUBLISH_COMMENT_TASK)) {
+                // 更新数目
+                mTopicModel.updateCommentCount(1);
                 // 插入评论内容
                 JSONObject json = JSON.parseObject(result.getData().toString());
                 CommentModel commentModel = new CommentModel();
@@ -350,6 +353,7 @@ public class MainActivity extends BaseActivity implements
                 mListAdapter.addItem(mSelectPosition + 1, new Section(Section.SECTION_COMMENT, commentModel));
                 mListAdapter.notifyDataSetChanged();
 
+                mCommentWindow.clearText();
                 Toaster.show(this, R.string.string_view_topic_detail_comment_success);
             } else if (taskName.equals(SEARCH_TOPIC_LIST_TASK)) {
                 updateTopicWords((List<TopicWord>) result.getData());

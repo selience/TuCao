@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.PopupWindow;
+
 import com.sdx.mobile.tucao.R;
 import com.sdx.mobile.tucao.util.Toaster;
 import com.sdx.mobile.tucao.util.UIUtils;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -62,6 +64,10 @@ public class CommentPopupWindow {
         if (mPopupWindow.isShowing()) {
             mPopupWindow.dismiss();
         }
+    }
+
+    public void clearText() {
+        mContentEditText.setText("");
     }
 
     public String getCommentData() {

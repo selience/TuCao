@@ -114,10 +114,13 @@ public class TopicListAdapter extends BaseListAdapter<Section, TopicListAdapter.
         viewHolder.mTimeTextView.setText(topicModel.getAdd_time());
         viewHolder.mCommentCountTextView.setText(UIUtils.getString(context,
                 R.string.string_homepage_list_item_comment_count_text, topicModel.getComment_count()));
+
         viewHolder.mUpDownImageView.setTag(new EventData(position, topicModel,
                 viewHolder.mUpDownImageView, EventData.TYPE_UP_DOWN, context));
         viewHolder.mCommentTextView.setTag(new EventData(position, topicModel,
                 viewHolder.mCommentTextView, EventData.TYPE_ADD_COMMENT, context));
+        viewHolder.mCommentCountTextView.setTag(new EventData(position, topicModel,
+                viewHolder.mCommentCountTextView, EventData.TYPE_ADD_COMMENT, context));
 
         Glide.with(context).load(topicModel.getUser_face())
                 .placeholder(R.drawable.color_placeholder_drawable)
@@ -176,6 +179,7 @@ public class TopicListAdapter extends BaseListAdapter<Section, TopicListAdapter.
 
         @OnClick({
                 R.id.id_topic_up_view,
+                R.id.id_topic_comment_count,
                 R.id.id_topic_comment_count_view
         })
         public void onClick(View view) {

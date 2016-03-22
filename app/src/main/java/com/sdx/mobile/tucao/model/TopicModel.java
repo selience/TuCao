@@ -109,6 +109,10 @@ public class TopicModel {
         this.comment_count = comment_count;
     }
 
+    public void updateCommentCount(int increase) {
+        this.comment_count += increase;
+    }
+
     public List<CommentModel> getComment_list() {
         return comment_list;
     }
