@@ -85,6 +85,10 @@ public class TopicModel {
         this.text = text;
     }
 
+    public boolean hasImageList() {
+        return (imgs != null && imgs.size() > 0);
+    }
+
     public List<String> getImgs() {
         return imgs;
     }

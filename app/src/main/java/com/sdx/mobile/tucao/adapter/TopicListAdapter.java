@@ -14,6 +14,8 @@ import com.sdx.mobile.tucao.base.BaseListAdapter;
 import com.sdx.mobile.tucao.model.CommentModel;
 import com.sdx.mobile.tucao.model.Section;
 import com.sdx.mobile.tucao.model.TopicModel;
+import com.sdx.mobile.tucao.util.DeviceUtils;
+import com.sdx.mobile.tucao.util.JumpUtils;
 import com.sdx.mobile.tucao.util.UIUtils;
 import com.sdx.mobile.tucao.widget.UITopicImageView;
 
@@ -105,9 +107,14 @@ public class TopicListAdapter extends BaseListAdapter<Section, TopicListAdapter.
         Section section = getItem(position);
         TopicModel topicModel = (TopicModel) section.getValue();
 
-        viewHolder.mTitleTextView.setVisibility(showTitle ? View.VISIBLE : View.GONE);
+        viewHolder.mTitleTextView.setTag(topicModel.getSid());
         viewHolder.mTitleTextView.setText(topicModel.getTitle());
+        viewHolder.mTitleTextView.setVisibility(showTitle ? View.VISIBLE : View.GONE);
+
+        int minHeight = (int) DeviceUtils.dp2px(context, 80);
+        viewHolder.mContentTextView.setMinHeight(topicModel.hasImageList() ? 0 : minHeight);
         viewHolder.mContentTextView.setText(topicModel.getText());
+
         viewHolder.mUpCountTextView.setText(UIUtils.getString(context,
                 R.string.string_homepage_list_item_upcount_text, topicModel.getUp_count()));
         viewHolder.mTopicImageView.updateView(topicModel.getImgs());
@@ -178,13 +185,19 @@ public class TopicListAdapter extends BaseListAdapter<Section, TopicListAdapter.
         }
 
         @OnClick({
+                R.id.id_topic_title,
                 R.id.id_topic_up_view,
                 R.id.id_topic_comment_count,
                 R.id.id_topic_comment_count_view
         })
         public void onClick(View view) {
-            EventData eventData = (EventData) view.getTag();
-            EventBus.getDefault().post(eventData);
+            if (view.getId() == R.id.id_topic_title) {
+                int topicId = Integer.valueOf(view.getTag().toString());
+                JumpUtils.startTopicDetailAction(view.getContext(), topicId);
+            } else {
+                EventData eventData = (EventData) view.getTag();
+                EventBus.getDefault().post(eventData);
+            }
         }
     }
 

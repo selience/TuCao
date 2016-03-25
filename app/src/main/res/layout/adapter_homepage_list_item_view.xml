@@ -17,6 +17,7 @@
         android:background="@color/color_white"
         android:padding="10dp"
         android:singleLine="true"
+        android:textColor="#0076ff"
         android:textSize="16sp" />
 
     <RelativeLayout

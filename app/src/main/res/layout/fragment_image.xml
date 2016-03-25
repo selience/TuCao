@@ -3,12 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.sdx.mobile.tucao.widget.TouchImageView
+    <uk.co.senab.photoview.PhotoView
         android:id="@+id/photoImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="@string/app_name"
-        android:scaleType="centerInside" />
+        android:contentDescription="@string/app_name" />
 
     <ProgressBar
         android:id="@+id/photoLoading"

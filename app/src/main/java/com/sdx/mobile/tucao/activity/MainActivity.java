@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.ListView;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sdx.mobile.tucao.R;
@@ -39,12 +38,9 @@ import com.sdx.mobile.tucao.widget.CommentPopupWindow.EventCommentData;
 import com.sdx.mobile.tucao.widget.EndlessScrollListener;
 import com.sdx.mobile.tucao.widget.TopicPopupWindow;
 import com.sdx.mobile.tucao.widget.TopicPopupWindow.EventPopupData;
-
 import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 import butterknife.OnTextChanged;
 import de.greenrobot.event.EventBus;
 
@@ -54,8 +50,7 @@ import de.greenrobot.event.EventBus;
  * Date: 2016/3/7 12:56
  * Desc:
  */
-public class MainActivity extends BaseActivity implements
-        AdapterView.OnItemClickListener, Runnable,
+public class MainActivity extends BaseActivity implements Runnable,
         EndlessScrollListener.OnLoadMoreListener,
         SwipeRefreshLayout.OnRefreshListener {
     private static final String GET_INDEX_DATA_TASK = "GET_INDEX_DATA";
@@ -315,13 +310,6 @@ public class MainActivity extends BaseActivity implements
         publishComment(eventData.topicId, eventData.content);
     }
 
-    @OnItemClick(R.id.id_listview)
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Section section = (Section) parent.getItemAtPosition(position);
-        if (section.getName().equals(Section.SECTION_TOPIC)) {
-            JumpUtils.startTopicDetailAction(this, ((TopicModel) section.getValue()).getSid());
-        }
-    }
 
     @OnTextChanged(R.id.id_topic_search_editview)
     public void onTextChanged(CharSequence s, int start, int before, int count) {
