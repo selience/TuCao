@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.ListView;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sdx.mobile.tucao.R;
@@ -33,14 +34,18 @@ import com.sdx.mobile.tucao.util.EditTextUtils;
 import com.sdx.mobile.tucao.util.JumpUtils;
 import com.sdx.mobile.tucao.util.SettingUtils;
 import com.sdx.mobile.tucao.util.Toaster;
+import com.sdx.mobile.tucao.util.UIUtils;
 import com.sdx.mobile.tucao.widget.CommentPopupWindow;
 import com.sdx.mobile.tucao.widget.CommentPopupWindow.EventCommentData;
 import com.sdx.mobile.tucao.widget.EndlessScrollListener;
 import com.sdx.mobile.tucao.widget.TopicPopupWindow;
 import com.sdx.mobile.tucao.widget.TopicPopupWindow.EventPopupData;
+
 import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import de.greenrobot.event.EventBus;
 
@@ -308,6 +313,14 @@ public class MainActivity extends BaseActivity implements Runnable,
         if (eventData.context != this) return;
         // 发表评论
         publishComment(eventData.topicId, eventData.content);
+    }
+
+
+    @OnClick(R.id.id_delete_view)
+    public void onClick(View view) {
+        mSearchTextView.setText("");
+        mSearchTextView.clearFocus();
+        UIUtils.hideSoftInputFromWindow(mSearchTextView);
     }
 
 

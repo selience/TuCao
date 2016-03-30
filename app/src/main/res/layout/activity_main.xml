@@ -31,6 +31,15 @@
             android:textColor="@color/color_dark_gray"
             android:textColorHint="@color/color_search_text"
             android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/id_delete_view"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="12dp"
+            android:scaleType="center"
+            android:src="@drawable/ic_edit_del" />
     </FrameLayout>
 
     <FrameLayout
